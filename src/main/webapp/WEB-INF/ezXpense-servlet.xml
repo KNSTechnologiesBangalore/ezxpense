@@ -1,0 +1,114 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"	>	
+	
+ 
+   <mvc:annotation-driven />
+    
+	<context:annotation-config />
+	<context:component-scan base-package="com.ezXpense" />
+	
+	
+	
+   
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	 <bean id="messageSource"
+        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:user" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+    
+	 
+    <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        	   <property name="locations">
+			       <list>
+			           <value>/WEB-INF/ezXpense.properties</value>
+			        </list>
+			   </property>
+      </bean> 
+      
+    <!-- <bean id="dataSource"
+        class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+        p:driverClassName="${jdbc.driverClassName}"
+        p:url="${jdbc.databaseurl}" p:username="${jdbc.username}"
+        p:password="${jdbc.password}" /> -->
+ 
+ 
+ 
+    <tx:annotation-driven />
+     <!-- <bean id="transactionManager"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean> -->
+    
+	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	
+	 <bean id="emailSender" class="com.ezXpense.frontend.common.utility.EmailSenderImpl">
+	  	<property name="serverHost" value="${server.baseURL}" /> 
+	  		 <property name="imagesPath" value="D:/ezXpense/Documents/images"/> 
+	  </bean> 
+	
+	
+	  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}" />
+		<property name="port" value="${mail.port}" />
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />	 
+		<property name="javaMailProperties">
+		   <props>
+	       	      <prop key="mail.smtp.auth">false</prop>
+	       	      <prop key="mail.smtp.starttls.enable">true</prop>
+	       	       <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+	       	   </props>
+		</property>
+	</bean>
+	
+	
+
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+	       
+	   <property name="velocityProperties">
+			<props>
+                <prop key="resource.loader">class</prop>
+                <prop key="class.resource.loader.class">
+                    org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+                </prop>
+            </props>
+		</property>
+	</bean>
+	
+<bean id="userService" class="com.ezXpense.frontend.user.service.UserServiceImpl" >
+	<!-- <property name="feedbackImagePath" value="F:/var/kikspotimages/feedback/images/"></property>  -->
+	 <property name="logoImagePath" value="D:/var/ezXpenseImages/organization/images/"></property>  
+	</bean>
+	   
+	
+	
+	
+</beans>
+  

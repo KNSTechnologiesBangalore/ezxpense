@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Untitled Document</title>
+</head>
+
+<body>
+	<table style="border:1px solid gray;width:600px;background-color:#D3D3D3;">
+		<tr>
+			<td>
+				<table class="header" style="width:600px;height:100px;">
+					<tr>
+						<td style="margin-top:50px;margin-left:10px;">
+							<img alt="" width="250px" height="50px" src="cid:logo" />
+						</td>
+					</tr>
+				</table>
+				<table class="container">
+					<tr>
+						<td style="width:600px;height:300px;background-color:#909090 ;font-family:sans-serif;font-size:14px;">
+							<p style="padding:8px;color:#9a2827"><b>Hello ${name}, Greetings!</b></p>
+			      			<p style="text-align: justify;padding:8px;color:lavender">
+			      				Congratulations, Your account has been successfully created in EzXpense with following credentials<br/>
+			      				Organization:${orgName}<br/>
+			      				Username: ${username}<br/>
+			      				Password: ${password}<br/>
+			      			</p>
+			        		<p style="padding-left:8px;margin-bottom: 0px;color:lavender">Thanks,</p>
+			        		<p style="padding-left:8px;margin-top:0px;color:lavender">Team EzXpense</p>
+						</td>
+					</tr>
+				</table>
+				<table id ="footer" style="width:600px;border-top: 1px solid gray;background-color:#C8C8C8">
+					<tr>
+						<td style="text-align:center;">
+							 <p> <img alt="" src="cid:fb" style="margin-right:15px;" /><img alt="" src="cid:twitter"/> </p>
+						</td>
+					</tr>
+					<tr>
+						<td style="border-top:#9a2827 solid 7px;background-color:#F0F0F0">
+							<p style="color:gray;font-size:12px;padding:8px;">Got Questions? The <a href="">EzXpense Support Center</a> can you help you resolve them. <i>This is a system generated mail, please do not reply.</i></p>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+   </body>
+  </html>
