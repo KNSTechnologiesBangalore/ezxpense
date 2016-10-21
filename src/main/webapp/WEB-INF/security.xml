@@ -1,0 +1,96 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/security
+			http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+	
+	
+	<sec:global-method-security secured-annotations="enabled" />
+		<context:annotation-config />
+	<context:component-scan base-package="com.ezXpense" />
+	<sec:http auto-config="true">
+		
+		<sec:form-login login-page="/" default-target-url="/loginsuccess.do" authentication-failure-url="/login.do?error=true" 
+		authentication-failure-handler-ref="customAuthenticationFailureHandler" always-use-default-target="false"/>		 
+		
+		<!-- <sec:custom-filter ref="exUsernamePasswordAuthenticationFilter" before="FORM_LOGIN_FILTER"/> -->
+		<!-- <sec:intercept-url pattern="/*" access="hasRole('ROLE_ADMIN')"/>	 -->
+	   <sec:intercept-url pattern="/admin/*.do" access="permitAll"/>
+		<sec:intercept-url pattern="/adminhome.do" access="permitAll"/>
+		<sec:intercept-url pattern="/recommendations/sharerecommendationlocations.do" access="permitAll"/>	
+		<sec:intercept-url pattern="/recommendations/sharelocationcomments.do" access="permitAll"/>	
+		<sec:intercept-url pattern="/recommendations/locationdetails.do" access="permitAll"/>	
+		<sec:intercept-url pattern="/game/user/getusergamedetails.do" access="permitAll"/>
+		<sec:intercept-url pattern="/game/*.do" access="hasRole('Admin')"/>	
+		
+		<sec:intercept-url pattern="/recommendations/**" access="hasRole('ROLE_ADMIN')"/>	
+		<sec:intercept-url pattern="/feedback/*" access="hasRole('Admin')"/>	
+		<sec:intercept-url pattern="/mobile/*" access="permitAll"/>
+    	<sec:intercept-url pattern="/login.do" access="permitAll"/>
+    	<sec:intercept-url pattern="/forgotpassword.do" access="permitAll"/>
+    	<sec:intercept-url pattern="/resetpassword.do" access="permitAll"/>
+    	<sec:intercept-url pattern="/home.do" access="permitAll"/>
+    	<sec:intercept-url pattern="/logoutsuccess.do" access="permitAll"/>
+    	<sec:intercept-url pattern="/referuser.do" access="permitAll"/>
+    	
+    	
+    			
+				
+				
+				
+				
+				
+        <sec:logout invalidate-session="true" logout-url="/logout.do" logout-success-url="/logoutsuccess.do" />
+        <!-- In spring 4.x by default csrf is enabled, we don't want csrf means we can disabled -->
+        <sec:csrf disabled="true"/>
+       
+	</sec:http>
+    
+
+  
+	<!-- Added CustomAuthenticationFailureHander bean By Bhagya On July 20 2016-->
+		<bean id="customAuthenticationFailureHandler"
+     	 class=" com.ezXpense.common.security.service.CustomAuthenticationFailureHandler">
+    		<property name="defaultFailureUrl" value="/login.do"/>
+   		</bean>
+   		<!-- <bean id="exUsernamePasswordAuthenticationFilter" class="com.ezXpense.common.security.service.ExUsernamePasswordAuthenticationFilter"/> -->
+		<bean id="userDetailsService" class="com.ezXpense.common.security.service.UserDetailsServiceImpl" />
+	    	<bean id="daoAuthenticationProvider"   
+                class="com.ezXpense.common.security.service.LimitingDaoAuthenticationProvider"
+                  p:userDetailsService-ref="userDetailsService"
+                  p:passwordEncoder-ref="bCryptEncoder"/>
+		
+		<!-- In spring 4.x ,no default constructor available for authenticationManager.so, we need to create-->
+		<bean id="authenticationManager"
+    			class="org.springframework.security.authentication.ProviderManager">
+    		<constructor-arg>
+        		<list>
+            		<ref bean="daoAuthenticationProvider" />
+        		</list>
+    		</constructor-arg>
+		</bean>
+	
+	 	<bean id="bCryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+    		<constructor-arg name="strength" value="11" />
+    	</bean>
+	
+        <sec:authentication-manager>
+            <sec:authentication-provider ref="daoAuthenticationProvider"/>
+       </sec:authentication-manager>
+</beans>
